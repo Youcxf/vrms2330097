@@ -1,5 +1,6 @@
 ﻿-- Flyway init schema (tables for vehicle/owner/agent/registration)
 -- NOTE: H2 is used in-memory (see application.yml), so we keep this H2-friendly.
+
 CREATE TABLE IF NOT EXISTS vehicles (
                                         id VARCHAR(36) PRIMARY KEY,
     vin VARCHAR(32) NOT NULL UNIQUE,
@@ -8,18 +9,21 @@ CREATE TABLE IF NOT EXISTS vehicles (
     vehicle_year INT NOT NULL,
     status VARCHAR(20) NOT NULL
     );
+
 CREATE TABLE IF NOT EXISTS owners (
                                       id VARCHAR(36) PRIMARY KEY,
     full_name VARCHAR(120) NOT NULL,
     address VARCHAR(200),
     status VARCHAR(20) NOT NULL
     );
+
 CREATE TABLE IF NOT EXISTS agents (
                                       id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(120) NOT NULL,
     role VARCHAR(20) NOT NULL,
     status VARCHAR(20) NOT NULL
     );
+
 CREATE TABLE IF NOT EXISTS registrations (
                                              id VARCHAR(36) PRIMARY KEY,
     vehicle_id VARCHAR(36) NOT NULL,
@@ -27,16 +31,17 @@ CREATE TABLE IF NOT EXISTS registrations (
     agent_id VARCHAR(36) NOT NULL,
     plate VARCHAR(16) NOT NULL UNIQUE,
     expiry DATE NOT NULL,
-    31
     status VARCHAR(20) NOT NULL,
     CONSTRAINT fk_registrations_vehicle FOREIGN KEY (vehicle_id) REFERENCES vehicles(id),
     CONSTRAINT fk_registrations_owner FOREIGN KEY (owner_id) REFERENCES owners(id),
     CONSTRAINT fk_registrations_agent FOREIGN KEY (agent_id) REFERENCES agents(id)
     );
+
 -- Helpful indexes for lookups / joins
 CREATE INDEX IF NOT EXISTS idx_registrations_vehicle_id ON registrations(vehicle_id);
 CREATE INDEX IF NOT EXISTS idx_registrations_owner_id ON registrations(owner_id);
 CREATE INDEX IF NOT EXISTS idx_registrations_agent_id ON registrations(agent_id);
+
 INSERT INTO vehicles (id, vin, make, model, vehicle_year, status) VALUES
                                                                       ('veh-1', 'VIN0001ABCDEFGHJK', 'Toyota', 'Corolla', 2018, 'ACTIVE'),
                                                                       ('veh-2', 'VIN0002ABCDEFGHJK', 'Honda', 'Civic', 2019, 'ACTIVE'),
@@ -48,6 +53,7 @@ INSERT INTO vehicles (id, vin, make, model, vehicle_year, status) VALUES
                                                                       ('veh-8', 'VIN0008ABCDEFGHJK', 'Mazda', 'Mazda3', 2020, 'ACTIVE'),
                                                                       ('veh-9', 'VIN0009ABCDEFGHJK', 'Nissan', 'Sentra', 2017, 'ACTIVE'),
                                                                       ('veh-10','VIN0010ABCDEFGHJK', 'Volkswagen', 'Jetta', 2021, 'ACTIVE');
+
 INSERT INTO owners (id, full_name, address, status) VALUES
                                                         ('own-1', 'John Smith', 'Montreal, QC', 'ACTIVE'),
                                                         ('own-2', 'Sarah Johnson', 'Laval, QC', 'ACTIVE'),
@@ -59,9 +65,11 @@ INSERT INTO owners (id, full_name, address, status) VALUES
                                                         ('own-8', 'Olivia Taylor', 'Longueuil, QC', 'ACTIVE'),
                                                         ('own-9', 'Daniel Thomas', 'Brossard, QC', 'ACTIVE'),
                                                         ('own-10','Sophia Moore', 'Montreal, QC', 'ACTIVE');
+
 INSERT INTO agents (id, name, role, status) VALUES
                                                 ('agent-1', 'Alice Martin', 'CLERK', 'ACTIVE'),
                                                 ('agent-2', 'Robert Lee', 'SUPERVISOR', 'ACTIVE');
+
 INSERT INTO registrations (id, vehicle_id, owner_id, agent_id, plate, expiry, status) VALUES
                                                                                           ('reg-1', 'veh-1', 'own-1', 'agent-1', 'QC-1001', DATE '2026-12-31', 'ACTIVE'),
                                                                                           ('reg-2', 'veh-2', 'own-2', 'agent-1', 'QC-1002', DATE '2026-11-30', 'ACTIVE'),
