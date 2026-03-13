@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/champsoft/vrms2330097/modules/agents/application/port/out/AgentRepositoryPort.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/champsoft/vrms2330097/modules/agents/application/service/AgentCrudService.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/champsoft/vrms2330097/modules/agents/application/service/AgentEligibilityService.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/champsoft/vrms2330097/modules/cars/domain/exception/InvalidVehicleYearException.java" charset="UTF-8" />
   </component>
 </project>

@@ -1,4 +1,4 @@
-﻿package com.champsoft.vrms2330097.modules.cars.domain.model;
+package com.champsoft.vrms2330097.modules.cars.domain.model;
 
 import com.champsoft.vrms2330097.modules.cars.domain.exception.InvalidVinException;
 

@@ -25,3 +25,31 @@ public class VehicleCrudService {
         return repo.findById(VehicleId.of(id))
                 .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found: " + id));
     }
+    @Transactional(readOnly = true)
+    public Vehicle getByVin(String vin) {
+        return repo.findByVin(new Vin(vin))
+                .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found by VIN: " + vin));
+    }
+    @Transactional(readOnly = true)
+    public List<Vehicle> list() {
+        return repo.findAll();
+    }
+    @Transactional
+    public Vehicle updateSpecs(String id, String make, String model, int year) {
+        var vehicle = getById(id);
+        vehicle.updateSpecs(new VehicleSpecs(make, model, year));
+        return repo.save(vehicle);
+    }
+    @Transactional
+    public Vehicle activate(String id) {
+        var vehicle = getById(id);
+        vehicle.activate();
+        return repo.save(vehicle);
+    }
+    @Transactional
+    public void delete(String id) {
+// ensure exists
+        getById(id);
+        repo.deleteById(VehicleId.of(id));
+    }
+}
