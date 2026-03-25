@@ -19,6 +19,7 @@
       retries: 10
 
   vrms-app:
+    build: .
     image: vrms:1.0
     container_name: vrms-pg
     depends_on:
