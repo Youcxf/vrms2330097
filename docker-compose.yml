@@ -1,0 +1,42 @@
+﻿services:
+  vrms-postgres:
+    image: postgres:18.3
+    container_name: vrms-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: vrms_db
+      POSTGRES_USER: vrms
+      POSTGRES_PASSWORD: vrms
+    volumes:
+      - vrms_pg_data:/var/lib/postgresql
+    networks:
+      - vrms-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vrms -d vrms_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  vrms-app:
+    image: vrms:1.0
+    container_name: vrms-pg
+    depends_on:
+      vrms-postgres:
+        condition: service_healthy
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: pg
+      POSTGRES_HOST: vrms-postgres
+      POSTGRES_DB: vrms_db
+      POSTGRES_USER: vrms
+      POSTGRES_PASSWORD: vrms
+    networks:
+      - vrms-net
+
+volumes:
+  vrms_pg_data:
+
+networks:
+  vrms-net:
